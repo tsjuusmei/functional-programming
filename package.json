@@ -1,0 +1,19 @@
+{
+  "name": "functional-programming",
+  "version": "1.0.0",
+  "description": "functional programming course of tech-track Information Design",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tsjuusmei/functional-programming.git"
+  },
+  "author": "Guus Maij",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tsjuusmei/functional-programming/issues"
+  },
+  "homepage": "https://github.com/tsjuusmei/functional-programming#readme"
+}
