@@ -1,7 +1,10 @@
-function pets() {
-    let pets = data.map(x => x.huisDieren)
+function cleanPets() {
+    let pets = data.map(x => {
+        return x.huisDieren
+            .toLowerCase()
+    })
 
     return pets
 }
 
-console.log(pets())
+console.log(cleanPets())
