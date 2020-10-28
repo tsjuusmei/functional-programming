@@ -5,7 +5,7 @@ Functional Programming, Tech-track of Information Design, thema semester of the 
 
 ### Research Questions
 
-1. What parking garages support parking spots for vehicles that are higher than 240cm?
+1. What parking spaces support parking spots for vehicles that are higher than 240cm?
 
 2. Where is the ideal place to park if you have an electric car?
 
@@ -13,7 +13,7 @@ Functional Programming, Tech-track of Information Design, thema semester of the 
 
 ### Where is the ideal place to park if you have an electric car?
 
-*For this question I assume that parking spaces with electric car are mostly in bigger cities, and that these spaces will be more expensive than parking garages without support for electric car charging*
+*For this question I assume that parking spaces with electric car are mostly in bigger cities, and that these spaces will be more expensive than parking spaces without support for electric car charging*
 
 **Sub questions**
 
@@ -21,4 +21,4 @@ Functional Programming, Tech-track of Information Design, thema semester of the 
 
 * Where is the most support for electric car charging in parking spaces?
 
-* How expensive is the parking garage?
+* How expensive is the parking space?
