@@ -1,0 +1,1 @@
+ export const endpoint = 'https://opendata.rdw.nl/resource/r3rs-ibz5?$limit=1800'
