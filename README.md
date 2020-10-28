@@ -1,8 +1,6 @@
 # functional-programming
 
-<<<<<<< HEAD
 Functional Programming, Tech-track of Information Design, thema semester of the third year from the study CMD.
-=======
 Functional Programming, Tech-track of Information Design, thema semester of the third year from the study CMD.
 
 
@@ -25,4 +23,3 @@ Functional Programming, Tech-track of Information Design, thema semester of the 
 * Where is the most support for electric car charging in parking spaces?
 
 * How expensive is the parking space?
->>>>>>> d582ebda1ce15f075d62e7b49335c151cf9e83a5

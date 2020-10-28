@@ -2,9 +2,9 @@
   "name": "functional-programming",
   "version": "1.0.0",
   "description": "functional programming course of tech-track Information Design",
-  "main": "index.html",
+  "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.html"
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
