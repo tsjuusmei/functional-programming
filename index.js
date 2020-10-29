@@ -50,11 +50,9 @@ function cleanPets() {
         .toString().split(',').filter(x => !!x).sort()
 
 
-    // Filtering on animal names
+    // Filtering out animals in the array
     const petsTotal = cleanPetsData.filter(name => animals.includes(name.toLowerCase()))
 
     // Returning the mentioned pet names in an array
     return petsTotal
 }
-
-console.log(cleanPets())
