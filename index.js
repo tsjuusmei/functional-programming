@@ -16,7 +16,13 @@ function cleanPets() {
             return x
                 .replace('hont', 'hond')
                 .replace(/dwerg teckel/g, 'hond')
+                .replace('chihuahua', 'hond')
                 .replace('katten', 'kat')
+                .replace('poes', 'kat')
+                .replace(/kater/g, 'kat')
+                .replace('guppen', 'vissen')
+                .replace('goudvis', 'vissen')
+                .replace('vogels', 'vogel')
         })
 
         // Emptying out unused words and numbers
@@ -32,16 +38,16 @@ function cleanPets() {
         // Putting dots inbetween names and removing double and triple dots to have better clearance in the array
         .map((x) => {
             return x
-                .replace(/,/g, '.')
-                .replace(/ /g, '.')
-                .replace(/:/g, '.')
+                .replace(/ /g, ',')
+                .replace(/:/g, ',')
+                .replace('.', ',')
         })
 
         // Filtering out empty objects
         .filter(x => !!x)
 
         // Transform to strings and split the words
-        .toString().split('.')
+        .toString().split(',').filter(x => !!x).sort()
 
 
     // Filtering on animal names
