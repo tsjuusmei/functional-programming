@@ -5,9 +5,9 @@
 
 ## Research Questions
 
-1. What parking spaces support parking spots for vehicles that are higher than 240cm?
+* What parking spaces support parking spots for vehicles that are higher than 240cm?
 
-2. Where is the ideal place to park if you have an electric car?
+* Where is the ideal place to park if you have an electric car?
 
 ## Chosen Question: 
 
