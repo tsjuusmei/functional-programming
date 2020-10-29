@@ -1,14 +1,13 @@
 # functional-programming
 
-Functional Programming, Tech-track of Information Design, thema semester of the third year from the study CMD.
-Functional Programming, Tech-track of Information Design, thema semester of the third year from the study CMD.
+*Functional Programming, Tech-track of Information Design, thema semester of the third year from the study CMD.*
 
 
-### Research Questions
+## Research Questions
 
-1. What parking spaces support parking spots for vehicles that are higher than 240cm?
+* What parking spaces support parking spots for vehicles that are higher than 240cm?
 
-2. Where is the ideal place to park if you have an electric car?
+* Where is the ideal place to park if you have an electric car?
 
 ## Chosen Question: 
 
