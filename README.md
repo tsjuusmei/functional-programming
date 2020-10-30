@@ -53,13 +53,19 @@ An interesting research case and question based on parking data in cities in The
 git clone https://github.com/tsjuusmei/functional-programming.git
 ```
 
-**2. Install NPM packages**
+**2. Change directory to the folder**
+
+```
+cd ./functional-programming
+```
+
+**3. Install NPM packages**
 
 ```
 npm install
 ```
 
-**3. Run the project**
+**4. Run the project**
 
 ```
 npm -r esm index.js
