@@ -1,1 +1,3 @@
-import endpoint from './js/data'
+import cleanPets from './js/cleanuppets'
+
+console.log(cleanPets())
