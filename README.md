@@ -32,3 +32,39 @@ An interesting research case and question based on parking data in cities in The
 
 * [Charging points in parking facilities](https://opendata.rdw.nl/Parkeren/Open-Data-Parkeren-SPECIFICATIES-PARKEERGEBIED/b3us-f26s)
 * [Tarifs of parking facilities](https://github.com/StanBankras/functional-programming/blob/7b103e400c03b80f58c1b2a4acc710a336ca5951/src/js/index.js#L70-L129) with huge credits to [Stan Bankras](https://github.com/StanBankras/) for creating the function for this
+
+
+## Installation
+
+*Installation guide on how to use this project*
+
+### Requirements
+
+* NodeJS
+* NPM
+
+### Installing
+
+*Put the following lines of `code` in your terminal*
+
+**1. Clone the repository**
+
+```
+git clone https://github.com/tsjuusmei/functional-programming.git
+```
+
+**2. Install NPM packages**
+
+```
+npm install
+```
+
+**3. Run the project**
+
+```
+npm -r esm index.js
+```
+
+## License
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
