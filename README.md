@@ -8,19 +8,25 @@ An interesting research case and question based on parking data in cities in The
 
 *The client for this assignment is [de Volkskrant](https://www.volkskrant.nl/), a very popular and big Dutch newspaper*
 
-## Research Questions 
+## Research Question
 
-### Where is the ideal place to park if you have an electric car?
+### Which city is best to park with an electric car ?
 
-*For this question I assume that parking spaces with electric car are mostly in bigger cities, and that these spaces will be more expensive than parking spaces without support for electric car charging*
+*For this question I assume that parking facilities with electric car are mostly in bigger cities, and that these spaces will be more expensive than parking spaces without support for electric car charging*
 
 **Sub questions**
 
-* How many parking spots are available for electric cars?
+* How many electric car charging parking spots are available for electric cars?
 
-* Where is the most support for electric car charging in parking spaces?
+*I'm assuming that there are more electric car charging parking spots in prosperous cities*
 
-* How expensive is the parking space?
+* Where is the most support for electric car charging in parking facilities?
+
+*I'm assuming that there is more support in bigger cities like Amsterdam or Utrecht than smaller cities.*
+
+* How expensive is the parking facility?
+
+*My assumption is that the parking facilities with support for electric car charging are more expensive than parking facilities without support for electric car charging.*
 
 #### What data am I going to need?
 
