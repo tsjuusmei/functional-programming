@@ -8,6 +8,7 @@ const endpoints = [
 ]
 const sharedKey = 'areaid'
 const token = '$$app_token=' + process.env.OPENDATA_RDW_APPTOKEN
+const keys = ['areaid', 'capacity', 'chargingpointcapacity', 'areageometryastext']
 
 async function getData(uriString) {
   let uri = uriString
@@ -48,25 +49,17 @@ function filterData(data, sharedKey) {
     areageometryastext: 'POLYGON 48576348576'
   }]
 
-  const capacity = dataset1.map((sharedKey) => {
-    const capacity = dataset1.find(capacity)
-    console.log(capacity)
-  })
-
-  console.log(capacity)
-
 }
 
 async function mergeData() {
 
-  let IDs = []
+  const result = await sharedIds(endpoints[0], endpoints[1], sharedKey)
+  const dataA = result.resultA.filter(x => result.sharedIds.includes(x.areaid))
+  const dataB = result.resultB.filter(x => result.sharedIds.includes(x.areaid))
 
-  await sharedIds(endpoints[0], endpoints[1], sharedKey)
-    .then(x => IDs.push(x.sharedIds))
+  console.log(dataB.map(x => x.areaid).sort())
 
-  console.log(IDs)
-
-  await filterData()
+  filterData([dataA, dataB], keys)
 
 }
 
