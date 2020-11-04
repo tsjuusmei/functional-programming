@@ -31,6 +31,9 @@ function sharedIds(endpointA, endpointB, sharedKey) {
   return Promise.all([resultA, resultB]).then(result => {
     idsA = result[0].map(x => x[sharedKey])
     sharedIds = result[1].filter(x => idsA.includes(x[sharedKey])).map(x => x[sharedKey])
+    sharedIds = sharedIds.filter((item, pos) => { // https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
+      return sharedIds.indexOf(item) == pos;
+    })
     return {
       sharedIds: sharedIds,
       resultA: result[0],
@@ -39,37 +42,39 @@ function sharedIds(endpointA, endpointB, sharedKey) {
   })
 }
 
-function filterData(data, sharedKey) {
+function filterData(data, keys) {
+  let combinedData = [];
 
-  let filteredData = [{
-    areaid: '193_noord',
-    capacity: 47523453,
-    chargingpointcapacity: 4,
-    areageometryastext: 'POLYGON 48576348576'
-  }]
+  data.forEach(dataset => {
+    dataset.forEach(obj => {
+      let cleanedObj = {};
+      const objInArray = combinedData.find(x => x.areaid === obj.areaid);
 
-  const capacity = dataset1.map((sharedKey) => {
-    const capacity = dataset1.find(capacity)
-    console.log(capacity)
-  })
+      // areaid is already in, just add missing key/values
+      if (objInArray) {
+        cleanedObj = objInArray;
+      }
 
-  console.log(capacity)
+      keys.forEach(key => {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+          // object has key, set it
+          cleanedObj[key] = obj[key];
+        }
+      });
+      combinedData = combinedData.filter(x => x.areaid !== obj.areaid);
+      combinedData.push(cleanedObj);
+    })
+  });
 
+  return combinedData;
 }
 
 async function mergeData() {
+  const result = await sharedIds(endpoints[0], endpoints[1], sharedKey);
+  let dataA = result.resultA.filter(x => result.sharedIds.includes(x.areaid));
+  let dataB = result.resultB.filter(x => result.sharedIds.includes(x.areaid));
 
-  let IDs = []
-
-  await sharedIds(endpoints[0], endpoints[1], sharedKey)
-    .then(x => IDs.push(x.sharedIds))
-
-  console.log(IDs)
-
-  await filterData()
-
+  return filterData([dataA, dataB], ['areaid', 'capacity', 'chargingpointcapacity', 'areageometryastext']);
 }
 
-// filterData(endpoints, sharedKey)
-
-mergeData()
+mergeData().then(x => console.log(x));
