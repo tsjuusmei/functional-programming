@@ -66,12 +66,46 @@ function filterData(data, keys) {
           cleanedObj[key] = obj[key];
         }
       });
+
       combinedData = combinedData.filter(x => x.areaid !== obj.areaid);
       combinedData.push(cleanedObj);
+      
     })
   });
-
   return combinedData;
+}
+
+function getCenterCord(coordinates) {
+  const type = coordinates.split(' ')[0]
+  let longLat = []
+  let coords = coordinates
+    .replace(type, '')
+    .replace(' ', '')
+    .replace(' (', '')
+    .replace('((', '')
+    .replace('))', '')
+    .replace('(', '')
+    .replace(')', '')
+    .replace(/,/g, '')
+    .split(' ')
+
+  if (coords.length > 2) {
+    let long = 0
+    let lat = 0
+
+    coords.forEach((coord, i) => {
+      if (i % 2 == 0) { // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Remainder
+        return long += Number(coord)
+      }
+      return lat += Number(coord)
+    })
+
+    longLat = [long / (coords.length / 2), lat / (coords.length / 2)]
+
+  } else {
+    longLat = [Number(coords[0]), Number(coords[1])]
+  }
+  return longLat
 }
 
 async function mergeData() {
@@ -82,4 +116,12 @@ async function mergeData() {
   return filterData([dataA, dataB], keys);
 }
 
-mergeData().then(x => console.log(x));
+mergeData().then(x => {
+  const newArray = x.map(y => {
+    let obj = y
+    obj.centerCoord = getCenterCord(obj.areageometryastext)
+    return obj
+  })
+  console.log(newArray)
+});
+
