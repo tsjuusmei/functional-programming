@@ -1,13 +1,18 @@
-import fetch from 'node-fetch'
-import dotenv from 'dotenv'
+// import fetch from 'node-fetch'
+// import dotenv from 'dotenv'
+
+const fetch = require('node-fetch')
+const dotenv = require('dotenv')
 dotenv.config()
+
+const token = '$$app_token=' + process.env.OPENDATA_RDW_APPTOKEN
 
 const endpoints = [
   'https://opendata.rdw.nl/resource/b3us-f26s.json?$where=chargingpointcapacity>0',
   'https://opendata.rdw.nl/resource/nsk3-v9n7.json'
 ]
 const sharedKey = 'areaid'
-const token = '$$app_token=' + process.env.OPENDATA_RDW_APPTOKEN
+const keys = ['areaid', 'capacity', 'chargingpointcapacity', 'areageometryastext']
 
 async function getData(uriString) {
   let uri = uriString
@@ -74,7 +79,7 @@ async function mergeData() {
   let dataA = result.resultA.filter(x => result.sharedIds.includes(x.areaid));
   let dataB = result.resultB.filter(x => result.sharedIds.includes(x.areaid));
 
-  return filterData([dataA, dataB], ['areaid', 'capacity', 'chargingpointcapacity', 'areageometryastext']);
+  return filterData([dataA, dataB], keys);
 }
 
 mergeData().then(x => console.log(x));
