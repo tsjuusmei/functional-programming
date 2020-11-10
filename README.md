@@ -68,7 +68,7 @@ npm install
 **4. Run the project**
 
 ```
-npm -r esm index.js
+node -r esm index.js
 ```
 
 ## License
