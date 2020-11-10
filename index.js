@@ -110,6 +110,13 @@ function getCenterCord(coordinates) {
   return longLat
 }
 
+async function getUuid(areaid) {
+  let uuid = undefined
+  let getUuid = await getData('https://opendata.rdw.nl/resource/mz4f-59fw.json?areaid=' + areaid)
+  uuid = getUuid[0].uuid
+  return uuid
+}
+
 async function mergeData() {
   const result = await sharedIds(endpoints[0], endpoints[1], sharedKey);
   let dataA = result.resultA.filter(x => result.sharedIds.includes(x.areaid));
@@ -143,9 +150,19 @@ mergeData().then(x => {
       return obj
     })
     .map(y => {
-      let obj = y;
-      obj.city = coordInPolygon(obj.centerCoord, cities);
-      return obj;
+      let obj = y
+      obj.city = coordInPolygon(obj.centerCoord, cities)
+      return obj
     })
-  console.log(newArray)
+    .map(async y => {
+      let obj = y
+      obj.uuid = await getUuid(obj.areaid)
+      return obj
+    })
+    // .map(async y => {
+    //   let obj = y
+    //   obj.tarifs = await getTarifs(obj.tarifs)
+    //   return obj
+    // })
+  Promise.all(newArray).then(x => console.log(x))
 });
