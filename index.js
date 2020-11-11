@@ -6,12 +6,10 @@ import allTariffs from './assets/data/tariffs'
 dotenv.config()
 
 const token = '$$app_token=' + process.env.OPENDATA_RDW_APPTOKEN
-
 const endpoints = [
   'https://opendata.rdw.nl/resource/b3us-f26s.json?$where=chargingpointcapacity>0', // Added query for filtering out facilities with at least 1 charging point capicity
   'https://opendata.rdw.nl/resource/nsk3-v9n7.json'
 ]
-
 const sharedKey = 'areaid' // This is the key where we can copy
 const keys = ['areaid', 'capacity', 'chargingpointcapacity', 'areageometryastext'] // Keys we will need for our dataset
 
@@ -53,7 +51,6 @@ function sharedIds(endpointA, endpointB, sharedKey) {
 // This function filters out unused keys and combines the datasets together
 function filterData(data, keys) {
   let combinedData = [];
-
   data.forEach(dataset => {
     dataset.forEach(obj => {
       let cleanedObj = {};
@@ -76,21 +73,10 @@ function filterData(data, keys) {
   return combinedData;
 }
 
-
-
-// async function getUuid(areaid) {
-//   let uuid = undefined
-//   let getUuid = await getData('https://opendata.rdw.nl/resource/mz4f-59fw.json?areaid=' + areaid)
-//   uuid = getUuid[0].uuid
-//   return uuid
-// }
-
 // This function checks what city a point coordinate is in based on polygons of cities
 function coordInPolygon(centerCoord, polygons) {
   let city = undefined
-
   let cities = polygons.features
-
   for (let i = 0; i < cities.length; i++) {
     let cityCoords = cities[i].geometry.coordinates[0]
     for (let j = 0; j < cityCoords.length; j++) {
@@ -102,29 +88,6 @@ function coordInPolygon(centerCoord, polygons) {
   }
   return city;
 }
-
-// async function getTarifs(uuid) {
-//   const tariffObj = {}
-//   let tariffs = undefined
-//   let getTariffs = await getData('https://npropendata.rdw.nl//parkingdata/v2/static/' + uuid)
-//   tariffs = getTariffs.parkingFacilityInformation.tariffs
-//   tariffs.forEach(tariff => {
-//     if (notExpiredTariff(tariff)) {
-//       tariff.validityDays.forEach(day => {
-//         const dayKey = day.split(' ').join('').toLowerCase();
-//         if (tariffObj[dayKey]) return;
-//         tariffObj[dayKey] = {
-//           // validFrom: tariff.validityFromTime,
-//           // validUntil: tariff.validityUntilTime,
-//           // rateInterval: tariff.rateIntervals,
-//           averageTariffPerMinute: getAverageTariffPerMinute(tariff)
-//         };
-//       });
-//     }
-//   });
-//   return tariffObj 
-// }
-
 
 // This function will retreive the tariffs for the facilities with the areaids
 function getTariffs(areaid) {
@@ -138,29 +101,6 @@ function getTariffs(areaid) {
   })
   return tariffObj
 }
-
-// function notExpiredTariff(tariff) {
-//   return tariff.startOfPeriod * 1000 < Date.now() && (tariff.endOfPeriod * 1000 > Date.now() || !tariff.endOfPeriod || tariff.endOfPeriod === -1);
-// }
-
-// function getAverageTariffPerMinute(tariff) {
-//   if (!tariff.intervalRates) return null;
-
-//   const minutesInDay = 1440;
-//   let weightedTotalCharge = 0;
-//   let totalMinutes = 0;
-
-//   tariff.intervalRates.forEach(rate => {
-//     const minutes = rate.durationUntil === -1 ? minutesInDay - rate.durationFrom : rate.durationUntil - rate.durationFrom;
-//     const charge = rate.charge
-//     const chargePeriod = rate.chargePeriod;
-//     const weightedCharge = charge * minutes / chargePeriod;
-//     weightedTotalCharge += weightedCharge;
-//     totalMinutes += minutes;
-//   });
-
-//   return weightedTotalCharge / totalMinutes;
-// }
 
 // This function will put the coordinates in an array and calculate the middle coordinate of a polygon
 function getCenterCord(coordinates) {
@@ -176,22 +116,18 @@ function getCenterCord(coordinates) {
     .replace(')', '')
     .replace(/,/g, '')
     .split(' ')
-
   if (coords.length > 2) { // This code will run for polygons
     let long = 0
     let lat = 0
-
     coords.forEach((coord, i) => {
       if (i % 2 == 0) { // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Remainder
         return long += Number(coord)
       }
       return lat += Number(coord)
     })
-
     longLat = [long / (coords.length / 2), lat / (coords.length / 2)]
-
   } else { // This code will run for points
-    longLat = [Number(coords[0]), Number(coords[1])] 
+    longLat = [Number(coords[0]), Number(coords[1])]
   }
   return longLat
 }
@@ -205,43 +141,29 @@ async function mergeData() {
   return filterData([dataA, dataB], keys);
 }
 
+// This chain of functions will create the dataset with usable data for my d3 project
 mergeData().then(x => {
   const newArray = x
+    // Get the center coordinates and mapping them
     .map(y => {
       let obj = y
       obj.centerCoord = getCenterCord(obj.areageometryastext)
       return obj
     })
+
+    // Get the cities and mapping them
     .map(y => {
       let obj = y
       obj.city = coordInPolygon(obj.centerCoord, cities)
       return obj
     })
 
-
-
-    // Promise.all(newArray).then(x => {
-    //   return x
-    //     .map(async y => {
-    //       let obj = y
-    //       obj.tariffs = await getTarifs(obj.uuid)
-    //       console.log(obj)
-    //       return obj
-    //     })
-    // })
-
-    // Get the tariffs
+    // Get the tariffs and mapping them
     .map(y => {
       let obj = y
       obj.tariffs = getTariffs(obj.areaid)
       return obj
     })
-
-    // .map(async y => {
-    //   let obj = y
-    //   obj.uuid = await getUuid(obj.areaid)
-    //   return obj
-    // })
 
     // Filters out empty tariffs
     .filter(y => {
@@ -257,11 +179,7 @@ mergeData().then(x => {
       }
       return y
     })
-    
+
     // Filters out undefined cities
-    .filter(y =>  y.city)
-
-  // Promise.all(newArray).then(x => console.log(x))
-
-  // console.log(newArray)
+    .filter(y => y.city)
 });
