@@ -1,6 +1,6 @@
 node_modules
 .env
-data
+/data
 
 enquete.data.testing
 json-fetch-example
