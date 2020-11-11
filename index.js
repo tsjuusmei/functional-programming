@@ -2,6 +2,7 @@ import fetch from 'node-fetch'
 import dotenv from 'dotenv'
 import inside from 'point-in-polygon'
 import cities from './assets/data/cities'
+import allTariffs from './assets/data/tariffs'
 dotenv.config()
 
 const token = '$$app_token=' + process.env.OPENDATA_RDW_APPTOKEN
@@ -110,12 +111,12 @@ function getCenterCord(coordinates) {
   return longLat
 }
 
-async function getUuid(areaid) {
-  let uuid = undefined
-  let getUuid = await getData('https://opendata.rdw.nl/resource/mz4f-59fw.json?areaid=' + areaid)
-  uuid = getUuid[0].uuid
-  return uuid
-}
+// async function getUuid(areaid) {
+//   let uuid = undefined
+//   let getUuid = await getData('https://opendata.rdw.nl/resource/mz4f-59fw.json?areaid=' + areaid)
+//   uuid = getUuid[0].uuid
+//   return uuid
+// }
 
 async function mergeData() {
   const result = await sharedIds(endpoints[0], endpoints[1], sharedKey);
@@ -142,6 +143,63 @@ function coordInPolygon(centerCoord, polygons) {
   return city;
 }
 
+// async function getTarifs(uuid) {
+//   const tariffObj = {}
+//   let tariffs = undefined
+//   let getTariffs = await getData('https://npropendata.rdw.nl//parkingdata/v2/static/' + uuid)
+//   tariffs = getTariffs.parkingFacilityInformation.tariffs
+//   tariffs.forEach(tariff => {
+//     if (notExpiredTariff(tariff)) {
+//       tariff.validityDays.forEach(day => {
+//         const dayKey = day.split(' ').join('').toLowerCase();
+//         if (tariffObj[dayKey]) return;
+//         tariffObj[dayKey] = {
+//           // validFrom: tariff.validityFromTime,
+//           // validUntil: tariff.validityUntilTime,
+//           // rateInterval: tariff.rateIntervals,
+//           averageTariffPerMinute: getAverageTariffPerMinute(tariff)
+//         };
+//       });
+//     }
+//   });
+//   return tariffObj 
+// }
+
+function getTariffs(areaid) {
+  const tariffObj = {}
+  let getTariffs = allTariffs[areaid]
+  if (!getTariffs) {
+    return undefined
+  }
+  Object.keys(getTariffs).forEach(key => {
+    tariffObj[key] = getTariffs[key].averageTariff * 1440
+  })
+  return tariffObj
+}
+
+// function notExpiredTariff(tariff) {
+//   return tariff.startOfPeriod * 1000 < Date.now() && (tariff.endOfPeriod * 1000 > Date.now() || !tariff.endOfPeriod || tariff.endOfPeriod === -1);
+// }
+
+// function getAverageTariffPerMinute(tariff) {
+//   if (!tariff.intervalRates) return null;
+
+//   const minutesInDay = 1440;
+//   let weightedTotalCharge = 0;
+//   let totalMinutes = 0;
+
+//   tariff.intervalRates.forEach(rate => {
+//     const minutes = rate.durationUntil === -1 ? minutesInDay - rate.durationFrom : rate.durationUntil - rate.durationFrom;
+//     const charge = rate.charge
+//     const chargePeriod = rate.chargePeriod;
+//     const weightedCharge = charge * minutes / chargePeriod;
+//     weightedTotalCharge += weightedCharge;
+//     totalMinutes += minutes;
+//   });
+
+//   return weightedTotalCharge / totalMinutes;
+// }
+
 mergeData().then(x => {
   const newArray = x
     .map(y => {
@@ -154,15 +212,46 @@ mergeData().then(x => {
       obj.city = coordInPolygon(obj.centerCoord, cities)
       return obj
     })
-    .map(async y => {
+
+
+
+    // Promise.all(newArray).then(x => {
+    //   return x
+    //     .map(async y => {
+    //       let obj = y
+    //       obj.tariffs = await getTarifs(obj.uuid)
+    //       console.log(obj)
+    //       return obj
+    //     })
+    // })
+
+    .map(y => {
       let obj = y
-      obj.uuid = await getUuid(obj.areaid)
+      obj.tariffs = getTariffs(obj.areaid)
       return obj
     })
+
     // .map(async y => {
     //   let obj = y
-    //   obj.tarifs = await getTarifs(obj.tarifs)
+    //   obj.uuid = await getUuid(obj.areaid)
     //   return obj
     // })
-  Promise.all(newArray).then(x => console.log(x))
+
+    .filter(y => {
+      Object.size = function (obj) { // Checks the size of an object https://stackoverflow.com/questions/5223/length-of-a-javascript-object
+        var size = 0, key;
+        for (key in obj) {
+          if (obj.hasOwnProperty(key)) size++;
+        }
+        return size;
+      };
+      if (Object.size(y.tariffs) === 0) {
+        return false
+      }
+      return y
+    })
+
+  // Promise.all(newArray).then(x => console.log(x))
+
+  console.log(newArray)
 });
