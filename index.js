@@ -73,35 +73,6 @@ function filterData(data, keys) {
   return combinedData;
 }
 
-// This function checks what city a point coordinate is in based on polygons of cities
-function coordInPolygon(centerCoord, polygons) {
-  let city = undefined
-  let cities = polygons.features
-  for (let i = 0; i < cities.length; i++) {
-    let cityCoords = cities[i].geometry.coordinates[0]
-    for (let j = 0; j < cityCoords.length; j++) {
-      if (inside(centerCoord, cityCoords[j])) {
-        city = cities[i].properties.name;
-        return city
-      }
-    }
-  }
-  return city;
-}
-
-// This function will retreive the tariffs for the facilities with the areaids
-function getTariffs(areaid) {
-  const tariffObj = {}
-  let getTariffs = allTariffs[areaid]
-  if (!getTariffs) {
-    return undefined
-  }
-  Object.keys(getTariffs).forEach(key => {
-    tariffObj[key] = getTariffs[key].averageTariff
-  })
-  return tariffObj
-}
-
 // This function will put the coordinates in an array and calculate the middle coordinate of a polygon
 function getCenterCord(coordinates) {
   const type = coordinates.split(' ')[0]
@@ -130,6 +101,35 @@ function getCenterCord(coordinates) {
     longLat = [Number(coords[0]), Number(coords[1])]
   }
   return longLat
+}
+
+// This function checks what city a point coordinate is in based on polygons of cities
+function coordInPolygon(centerCoord, polygons) {
+  let city = undefined
+  let cities = polygons.features
+  for (let i = 0; i < cities.length; i++) {
+    let cityCoords = cities[i].geometry.coordinates[0]
+    for (let j = 0; j < cityCoords.length; j++) {
+      if (inside(centerCoord, cityCoords[j])) {
+        city = cities[i].properties.name;
+        return city
+      }
+    }
+  }
+  return city;
+}
+
+// This function will retreive the tariffs for the facilities with the areaids
+function getTariffs(areaid) {
+  const tariffObj = {}
+  let getTariffs = allTariffs[areaid]
+  if (!getTariffs) {
+    return undefined
+  }
+  Object.keys(getTariffs).forEach(key => {
+    tariffObj[key] = getTariffs[key].averageTariff
+  })
+  return tariffObj
 }
 
 // This function merges the datasets to 1 dataset
