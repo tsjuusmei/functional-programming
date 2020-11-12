@@ -30,9 +30,10 @@ An interesting research case and question based on parking data in cities in The
 
 #### What data am I going to need?
 
-* [Charging points in parking facilities](https://opendata.rdw.nl/Parkeren/Open-Data-Parkeren-SPECIFICATIES-PARKEERGEBIED/b3us-f26s)
-* [Tarifs of parking facilities](https://github.com/StanBankras/functional-programming/blob/7b103e400c03b80f58c1b2a4acc710a336ca5951/src/js/index.js#L70-L129) with huge credits to [Stan Bankras](https://github.com/StanBankras/) for creating the function for this
-
+* Charging points, areaid and capacity from [this dataset](https://opendata.rdw.nl/resource/b3us-f26s.json?$where=chargingpointcapacity>0)
+* Location of parking facilities from [this dataset](https://opendata.rdw.nl/resource/b3us-f26s.json)
+* The uuid of the facility from [this dataset](https://opendata.rdw.nl/resource/mz4f-59fw.json)
+* Tariffs from [this dataset](https://npropendata.rdw.nl/parkingdata/v2/)
 
 ## Installation
 
