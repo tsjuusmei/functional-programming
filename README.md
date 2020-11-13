@@ -72,6 +72,12 @@ npm install
 node -r esm index.js
 ```
 
+## Acknowledgements
+
+[Functional Programming](https://github.com/tsjuusmei/functional-programming/wiki/Functional-Programming)
+
+[Sources](https://github.com/tsjuusmei/functional-programming/wiki/Sources)
+
 ## License
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
